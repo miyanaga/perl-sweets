@@ -1,0 +1,6 @@
+Revision history for Perl extension Sweets.
+
+0.01  Mon May  7 02:57:20 2012
+	- original version; created by h2xs 1.23 with options
+		-X Sweets
+

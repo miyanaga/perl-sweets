@@ -1,0 +1,10 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/001-compile.t
+t/002-variant.t
+lib/Sweets.pm
+lib/Sweets/Variant.pm
+lib/Sweets/Variant/Set.pm
+lib/Sweets/Variant/Cascading.pm
