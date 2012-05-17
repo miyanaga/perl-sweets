@@ -183,6 +183,7 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/Sweets.pm \
+	lib/Sweets/Tree/MultiPath/Node.pm \
 	lib/Sweets/Variant.pm \
 	lib/Sweets/Variant/Cascading.pm \
 	lib/Sweets/Variant/Set.pm
@@ -194,7 +195,9 @@ PM_TO_BLIB = lib/Sweets/Variant/Set.pm \
 	lib/Sweets.pm \
 	blib/lib/Sweets.pm \
 	lib/Sweets/Variant.pm \
-	blib/lib/Sweets/Variant.pm
+	blib/lib/Sweets/Variant.pm \
+	lib/Sweets/Tree/MultiPath/Node.pm \
+	blib/lib/Sweets/Tree/MultiPath/Node.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -856,7 +859,8 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	  lib/Sweets/Variant/Set.pm blib/lib/Sweets/Variant/Set.pm \
 	  lib/Sweets/Variant/Cascading.pm blib/lib/Sweets/Variant/Cascading.pm \
 	  lib/Sweets.pm blib/lib/Sweets.pm \
-	  lib/Sweets/Variant.pm blib/lib/Sweets/Variant.pm 
+	  lib/Sweets/Variant.pm blib/lib/Sweets/Variant.pm \
+	  lib/Sweets/Tree/MultiPath/Node.pm blib/lib/Sweets/Tree/MultiPath/Node.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

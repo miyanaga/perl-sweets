@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 13;
+use Test::More tests => 15;
 use Sweets::Variant;
 
 {
@@ -46,4 +46,12 @@ use Sweets::Variant;
     my @a = sort { $a <=> $b } $v->_array;
     is_deeply \@a, [1,2], 'As array, equal values';
     is_deeply $v->_hash, {a=> 1, b => 2}, 'Raw hash';
+}
+
+{
+    # Onwership
+    my $v = Sweets::Variant->new();
+    ok !defined $v->_owner;
+    $v->_owner(1);
+    is $v->_owner, 1;
 }

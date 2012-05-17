@@ -8,12 +8,13 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 use_ok('Sweets');
 use_ok('Sweets::Variant');
 use_ok('Sweets::Variant::Set');
 use_ok('Sweets::Variant::Cascading');
+use_ok('Sweets::Tree::MultiPath::Node');
 
 #########################
 

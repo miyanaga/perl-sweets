@@ -22,6 +22,12 @@ sub _raw {
     shift->{raw};
 }
 
+sub _owner {
+    my $self = shift;
+    $self->{owner} = $_[0] if defined $_[0];
+    $self->{owner};
+}
+
 sub _is_defined {
     my $self = shift;
     defined($self->{raw})? $self: undef;
