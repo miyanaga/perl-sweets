@@ -4,7 +4,13 @@ use strict;
 use warnings;
 
 use Sweets;
+use YAML::Syck;
 # use AutoLoader qw(AUTOLOAD);
+
+sub BEGIN {
+    $YAML::Syck::SortKeys = 1;
+    $YAML::Syck::Headless = 1;
+}
 
 sub new {
     my $pkg = shift;
@@ -139,6 +145,33 @@ sub _find {
 
 sub _at {
     shift->_find($_[0]);
+}
+
+sub _from_yaml {
+    my $self = shift;
+    $self = $self->new unless ref $self;
+    my ( $yaml ) = @_;
+    $self->{raw} = YAML::Syck::Load($yaml);
+    $self;
+}
+
+sub _to_yaml {
+    my $self = shift;
+    YAML::Syck::Dump($self->{raw});
+}
+
+sub _load_yaml {
+    my $self = shift;
+    $self = $self->new unless ref $self;
+    my ( $file ) = @_;
+    $self->{raw} = YAML::Syck::LoadFile($file);
+    $self;
+}
+
+sub _save_yaml {
+    my $self = shift;
+    my ( $file ) = @_;
+    YAML::Syck::DumpFile($file, $self->{raw});
 }
 
 sub AUTOLOAD {
