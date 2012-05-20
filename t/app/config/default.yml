@@ -1,0 +1,10 @@
+only_core:
+    here: core
+builtin_overrides:
+    here: core
+common_overrides:
+    here: core
+plugin_overrides:
+    here: core
+private_overrides:
+    here: core

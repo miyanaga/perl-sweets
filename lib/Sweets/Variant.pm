@@ -4,7 +4,10 @@ use strict;
 use warnings;
 
 use Sweets;
+
+use Any::Moose;
 use YAML::Syck;
+use Hash::Merge;
 # use AutoLoader qw(AUTOLOAD);
 
 sub BEGIN {
@@ -12,21 +15,14 @@ sub BEGIN {
     $YAML::Syck::Headless = 1;
 }
 
-sub new {
-    my $pkg = shift;
-    $pkg = ref $pkg if ref $pkg;
-    my ( $value ) = @_;
+has _raw => ( is => 'rw' );
 
-    bless { raw => $value }, $pkg;
-}
+around BUILDARGS => sub {
+    my $orig = shift;
+    my $class = shift;
 
-sub DESTROY {
-    delete shift->{raw};
-}
-
-sub _raw {
-    shift->{raw};
-}
+    $class->$orig( _raw => shift );
+};
 
 sub _owner {
     my $self = shift;
@@ -36,41 +32,41 @@ sub _owner {
 
 sub _is_defined {
     my $self = shift;
-    defined($self->{raw})? $self: undef;
+    defined($self->_raw)? $self: undef;
 }
 
 sub _is_scalar {
     my $self = shift;
-    my $raw = $self->{raw};
+    my $raw = $self->_raw;
     defined($raw) && !ref $raw? $self: undef;
 }
 
 sub _is_array {
     my $self = shift;
-    my $raw = $self->{raw};
+    my $raw = $self->_raw;
     defined($raw) && ref $raw eq 'ARRAY'? $self: undef;
 }
 
 sub _is_arrayable {
     my $self = shift;
-    my $raw = $self->{raw};
+    my $raw = $self->_raw;
     defined($raw) && ( !ref $raw || ref $raw eq 'ARRAY' || ref $raw eq 'HASH' )
         ? $self: undef;
 }
 
 sub _is_hash {
     my $self = shift;
-    my $raw = $self->{raw};
+    my $raw = $self->_raw;
     defined($raw) && ref $raw eq 'HASH'? $self: undef;
 }
 
 sub _scalar {
-    my $value = shift->{raw};
+    my $value = shift->_raw;
     ref $value? undef: $value;
 }
 
 sub _array {
-    my $value = shift->{raw};
+    my $value = shift->_raw;
 
     return wantarray? @$value: $value
         if ref $value eq 'ARRAY';
@@ -115,12 +111,24 @@ sub _unique_array {
 }
 
 sub _hash {
-    my $value = shift->{raw};
+    my $value = shift->_raw;
     ref $value eq 'HASH'? $value: undef;
 }
 
+sub _merge_hash {
+    my $self = shift;
+    my ( $merging, $override ) = @_;
+    $merging = $merging->_hash if eval { $merging->isa('Sweets::Variant') };
+    $merging = {} if ref $merging ne 'HASH';
+    $override = 1 unless defined $override;
+    my $hash = $self->_hash || {};
+
+    my $merger = Hash::Merge->new( $override? 'RIGHT_PRECEDENT': 'LEFT_PRECEDENT' );
+    $self->_raw($merger->merge( $hash, $merging ));
+}
+
 sub _find {
-    my $raw = shift->{raw};
+    my $raw = shift->_raw;
     my ( $needle ) = @_;
 
     my $traverse = $raw;
@@ -151,27 +159,29 @@ sub _from_yaml {
     my $self = shift;
     $self = $self->new unless ref $self;
     my ( $yaml ) = @_;
-    $self->{raw} = YAML::Syck::Load($yaml);
+    $self->_raw(YAML::Syck::Load($yaml));
     $self;
 }
 
 sub _to_yaml {
     my $self = shift;
-    YAML::Syck::Dump($self->{raw});
+    YAML::Syck::Dump($self->_raw);
 }
 
 sub _load_yaml {
     my $self = shift;
     $self = $self->new unless ref $self;
     my ( $file ) = @_;
-    $self->{raw} = YAML::Syck::LoadFile($file);
+    return unless -f $file;
+
+    $self->_raw(YAML::Syck::LoadFile($file));
     $self;
 }
 
 sub _save_yaml {
     my $self = shift;
     my ( $file ) = @_;
-    YAML::Syck::DumpFile($file, $self->{raw});
+    YAML::Syck::DumpFile($file, $self->_raw);
 }
 
 sub AUTOLOAD {
@@ -179,12 +189,15 @@ sub AUTOLOAD {
     our $AUTOLOAD;
     if ( $AUTOLOAD =~ /.*::(.*)/ ) {
         my $name = $1;
-        my $raw = $self->{raw};
+        my $raw = $self->_raw;
         my $v;
         $v = $raw->{$name} if ref $raw eq 'HASH';
         return Sweets::Variant->new($v);
     }
 }
+
+no Any::Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 __END__

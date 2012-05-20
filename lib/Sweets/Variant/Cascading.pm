@@ -4,17 +4,10 @@ use strict;
 use warnings;
 use parent 'Sweets::Variant';
 
+use Any::Moose;
 use Sweets::Variant::Set;
 
-sub new {
-    my $self = shift->SUPER::new(@_);
-}
-
-sub _cascade_to {
-    my $self = shift;
-    $self->{cascade} = $_[0] if @_;
-    $self->{cascade};
-}
+has _cascade_to => ( is => 'rw', isa => 'Sweets::Variant::Cascading' );
 
 sub _cascade_find {
     my $variant = shift;
@@ -44,6 +37,9 @@ sub _cascade_set {
 
     Sweets::Variant::Set->new(@set);
 }
+
+no Any::Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 __END__

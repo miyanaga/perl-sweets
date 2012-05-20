@@ -3,26 +3,27 @@ package Sweets::Variant::Set;
 use strict;
 use warnings;
 
+use Any::Moose;
 use Hash::Merge;
 
-sub new {
-    my $pkg = shift;
-    $pkg = ref $pkg if ref $pkg;
+has _set => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
 
-    my $self = bless { set => [] }, $pkg;
-    $self->_push( @_ );
-    $self;
-}
+around BUILDARGS => sub {
+    my $orig = shift;
+    my $class = shift;
+
+    $class->$orig( _set => \@_ );
+};
 
 sub _push {
-    push @{shift->{set}}, grep {
+    push @{shift->_set}, grep {
         eval { $_->isa('Sweets::Variant') }
     } @_;
 }
 
 sub _array {
     my $self = shift;
-    wantarray? @{$self->{set}}: $self->{set};
+    wantarray? @{$self->_set}: $self->_set;
 }
 
 sub _merge_arrays {
@@ -40,12 +41,15 @@ sub _merge_hashes {
     my %result;
     my ( $reverse ) = 1;
     my $merger = Hash::Merge->new($reverse? 'RIGHT_PRECEDENT': 'LEFT_PRECEDENT');
-    for my $v ( @{shift->{set}} ) {
+    for my $v ( @{shift->_set} ) {
         my $hash = $v->_hash || next;
         %result = %{$merger->merge( \%result, $hash )};
     }
     Sweets::Variant->new(\%result);
 }
+
+no Any::Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 __END__

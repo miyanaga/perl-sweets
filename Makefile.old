@@ -183,6 +183,12 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/Sweets.pm \
+	lib/Sweets/Application.pm \
+	lib/Sweets/Application/Component.pm \
+	lib/Sweets/Application/Component/Config.pm \
+	lib/Sweets/Application/Component/Plugin.pm \
+	lib/Sweets/Application/Components.pm \
+	lib/Sweets/Application/Components/Config.pm \
 	lib/Sweets/Tree/MultiPath/Node.pm \
 	lib/Sweets/Variant.pm \
 	lib/Sweets/Variant/Cascading.pm \
@@ -190,14 +196,26 @@ TO_INST_PM = lib/Sweets.pm \
 
 PM_TO_BLIB = lib/Sweets/Variant/Set.pm \
 	blib/lib/Sweets/Variant/Set.pm \
+	lib/Sweets/Application/Components.pm \
+	blib/lib/Sweets/Application/Components.pm \
+	lib/Sweets/Application/Component.pm \
+	blib/lib/Sweets/Application/Component.pm \
+	lib/Sweets/Application/Component/Config.pm \
+	blib/lib/Sweets/Application/Component/Config.pm \
+	lib/Sweets/Application.pm \
+	blib/lib/Sweets/Application.pm \
+	lib/Sweets/Variant.pm \
+	blib/lib/Sweets/Variant.pm \
 	lib/Sweets/Variant/Cascading.pm \
 	blib/lib/Sweets/Variant/Cascading.pm \
 	lib/Sweets.pm \
 	blib/lib/Sweets.pm \
-	lib/Sweets/Variant.pm \
-	blib/lib/Sweets/Variant.pm \
+	lib/Sweets/Application/Component/Plugin.pm \
+	blib/lib/Sweets/Application/Component/Plugin.pm \
 	lib/Sweets/Tree/MultiPath/Node.pm \
-	blib/lib/Sweets/Tree/MultiPath/Node.pm
+	blib/lib/Sweets/Tree/MultiPath/Node.pm \
+	lib/Sweets/Application/Components/Config.pm \
+	blib/lib/Sweets/Application/Components/Config.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -857,10 +875,16 @@ ppd :
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
 	  lib/Sweets/Variant/Set.pm blib/lib/Sweets/Variant/Set.pm \
+	  lib/Sweets/Application/Components.pm blib/lib/Sweets/Application/Components.pm \
+	  lib/Sweets/Application/Component.pm blib/lib/Sweets/Application/Component.pm \
+	  lib/Sweets/Application/Component/Config.pm blib/lib/Sweets/Application/Component/Config.pm \
+	  lib/Sweets/Application.pm blib/lib/Sweets/Application.pm \
+	  lib/Sweets/Variant.pm blib/lib/Sweets/Variant.pm \
 	  lib/Sweets/Variant/Cascading.pm blib/lib/Sweets/Variant/Cascading.pm \
 	  lib/Sweets.pm blib/lib/Sweets.pm \
-	  lib/Sweets/Variant.pm blib/lib/Sweets/Variant.pm \
-	  lib/Sweets/Tree/MultiPath/Node.pm blib/lib/Sweets/Tree/MultiPath/Node.pm 
+	  lib/Sweets/Application/Component/Plugin.pm blib/lib/Sweets/Application/Component/Plugin.pm \
+	  lib/Sweets/Tree/MultiPath/Node.pm blib/lib/Sweets/Tree/MultiPath/Node.pm \
+	  lib/Sweets/Application/Components/Config.pm blib/lib/Sweets/Application/Components/Config.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
