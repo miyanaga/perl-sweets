@@ -106,6 +106,16 @@ sub parents_and_self {
     wantarray? @parents: \@parents;
 }
 
+sub parent_at {
+    my $self = shift;
+    my @traverse = reverse $self->parents_and_self;
+    my $depth = int($_[0]);
+    $depth = $self->depth + $depth if $depth < 0;
+    return undef if $depth < 0;
+
+    $traverse[$depth];
+}
+
 sub build_path {
     my $self = shift;
     my ( $ns, $separator ) = @_;

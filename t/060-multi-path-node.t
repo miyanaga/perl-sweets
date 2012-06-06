@@ -98,6 +98,26 @@ my $no_child11_filter = sub {
 }
 
 {
+    is $root->parent_at(0), $root;
+    is $root->parent_at(1), undef;
+    is $root->parent_at(-1), undef;
+
+    is $child1->parent_at(0), $root;
+    is $child1->parent_at(1), $child1;
+    is $child1->parent_at(2), undef;
+    is $child1->parent_at(-1), $root;
+    is $child1->parent_at(-2), undef;
+
+    is $child11->parent_at(0), $root;
+    is $child11->parent_at(1), $child1;
+    is $child11->parent_at(2), $child11;
+    is $child11->parent_at(3), undef;
+    is $child11->parent_at(-1), $child1;
+    is $child11->parent_at(-2), $root;
+    is $child11->parent_at(-3), undef;
+}
+
+{
     my $children = $root->children('first');
     is_deeply $children, { child1 => $child1, child2 => $child2 };
 
