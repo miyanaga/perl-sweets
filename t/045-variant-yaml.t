@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Sweets::Variant;
-use Test::More tests => 16;
+use Test::More;
 
 my $backup = Sweets::Variant->new({
     a => 1,
@@ -92,3 +92,5 @@ my $backup = Sweets::Variant->new({
     is $no_override->b->c->_scalar, 2;
     is $no_override->b->d->_scalar, 3;
 }
+
+done_testing;

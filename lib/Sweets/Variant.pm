@@ -172,7 +172,7 @@ sub _load_yaml {
     my $self = shift;
     $self = $self->new unless ref $self;
     my ( $file ) = @_;
-    return unless -f $file;
+    return $self unless -f $file;
 
     $self->_raw(YAML::Syck::LoadFile($file));
     $self;

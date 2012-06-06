@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More;
 
 use Sweets::Variant;
 
@@ -17,3 +17,5 @@ my $simple_array = Sweets::Variant->new([1,2,3]);
     isa_ok $s->a, 'Sweets::Variant';
     is $s->a->_scalar, undef, 'Not an error to scalar variant';
 }
+
+done_testing;

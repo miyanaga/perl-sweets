@@ -102,3 +102,5 @@ $private->_cascade_to($local);
         local   => 'LOCAL',
     };
 }
+
+done_testing;

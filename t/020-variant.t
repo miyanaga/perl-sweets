@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More;
 use Sweets::Variant;
 
 {
@@ -55,3 +55,5 @@ use Sweets::Variant;
     $v->_owner(1);
     is $v->_owner, 1;
 }
+
+done_testing;

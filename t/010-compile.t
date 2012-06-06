@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More;
 
 use_ok('Sweets');
 use_ok('Sweets::Variant');
@@ -21,6 +21,8 @@ use_ok('Sweets::Application::Component::Config');
 use_ok('Sweets::Application::Component::Plugin');
 use_ok('Sweets::Application::Components');
 use_ok('Sweets::Application::Components::Config');
+
+done_testing;
 
 #########################
 

@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 34;
+use Test::More;
 use Sweets::Application::Components;
 
 my $components = Sweets::Application::Components->new(
@@ -76,3 +76,5 @@ my $private = $components->component('private');
     is $components->file_path_to('static/index.html'), 't/app/private/plugins/plugin1/static/index.html';
 
 }
+
+done_testing;

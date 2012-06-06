@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More;
 
 use Sweets::Variant;
 
@@ -62,3 +62,5 @@ my $mixed = Sweets::Variant->new({
     is $deep_hash->a->b->_hash->{c}, 1, 'Hash mixed path';
 
 }
+
+done_testing;

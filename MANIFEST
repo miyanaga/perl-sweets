@@ -8,3 +8,8 @@ lib/Sweets.pm
 lib/Sweets/Variant.pm
 lib/Sweets/Variant/Set.pm
 lib/Sweets/Variant/Cascading.pm
+lib/Sweets/Application/Component.pm
+lib/Sweets/Application/Components.pm
+lib/Sweets/Application/Component/Config.pm
+lib/Sweets/Application/Component/Plugin.pm
+lib/Sweets/Application/Components/Config.pm

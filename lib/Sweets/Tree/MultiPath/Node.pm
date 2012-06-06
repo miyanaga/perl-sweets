@@ -7,22 +7,29 @@ use Any::Moose;
 
 our $DEFAULT_ORDER = 1000;
 our $DEFAULT_NS = '';
+our $DEFAULT_SEPARATOR = '/';
 
 has parent => ( is => 'rw', isa => 'Sweets::Tree::MultiPath::Node' );
 has namespaces => ( is => 'ro', isa => 'HashRef', default => sub { {} } );
 has order => ( is => 'rw', isa => 'Int', default => sub { $DEFAULT_ORDER } );
 has names => ( is => 'rw', isa => 'HashRef', default => sub { {} } );
+has depth => ( is => 'rw', isa => 'Int', lazy_build => 1, builder => sub {
+    my $parent = shift->parent || return 0;
+    $parent->depth + 1;
+});
 
 sub name {
     my $self = shift;
-    my ( $ns ) = @_;
+    my ( $ns, $value ) = @_;
     $ns ||= $DEFAULT_NS;
+    $self->names->{$ns} = $value if defined $value;
     $self->names->{$ns};
 }
 
 sub children {
     my $self = shift;
     my ( $ns, $filter ) = @_;
+    $ns ||= $DEFAULT_NS;
     my $children = $self->namespaces->{$ns};
     return if ref $children ne 'HASH';
 
@@ -97,6 +104,16 @@ sub parents_and_self {
     unshift @parents, $self;
 
     wantarray? @parents: \@parents;
+}
+
+sub build_path {
+    my $self = shift;
+    my ( $ns, $separator ) = @_;
+    $ns ||= $DEFAULT_NS;
+    $separator = $DEFAULT_SEPARATOR unless defined($separator);
+    my @parents = $self->parents_and_self;
+
+    join( $separator, map { $_->name($ns) || '' } reverse @parents );
 }
 
 sub sorted_children {

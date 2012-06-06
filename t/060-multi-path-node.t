@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 26;
+use Test::More;
 use Sweets::Tree::MultiPath::Node;
 
 my $root = Sweets::Tree::MultiPath::Node->new(
@@ -45,6 +45,17 @@ my $no_child11_filter = sub {
 };
 
 {
+    $root->name('third', 'Root');
+    is $root->name('third'), 'Root';
+}
+
+{
+    is $root->depth, 0;
+    is $child1->depth, 1;
+    is $child11->depth, 2;
+}
+
+{
     my $first = $child1->name('first');
     is $first, 'child1';
 
@@ -78,6 +89,12 @@ my $no_child11_filter = sub {
 
     my $parents_and_self = $child11->parents_and_self;
     is_deeply $parents_and_self, [ $child11, $child1, $root ];
+
+    my $path = $child11->build_path('first', '/');
+    is $path, 'root/child1/child11';
+
+    $path = $child11->build_path('second', '-');
+    is $path, 'ROOT-CHILD1-CHILD11';
 }
 
 {
@@ -146,3 +163,5 @@ my $no_child11_filter = sub {
     $found = $child1->find('second', 'CHILD12');
     ok !defined $found;
 }
+
+done_testing;
