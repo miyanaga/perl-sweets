@@ -32,7 +32,7 @@ has id => ( is => 'ro', isa => 'Str', lazy_build => 1, builder => sub {
 
 sub BUILD {
     my $self = shift;
-    die "The directory path " . $self->path . " does not exist"
+    Carp::confess("The directory path " . $self->path . " does not exist")
         unless -d $self->path;
 }
 

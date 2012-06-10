@@ -61,7 +61,8 @@ sub find {
 sub add {
     my $self = shift;
     my ( $node ) = shift;
-    die 'add requires Sweets::Tree::MultiPath::Node' unless eval { $node->isa('Sweets::Tree::MultiPath::Node') };
+    Carp::confess('add requires Sweets::Tree::MultiPath::Node')
+        unless eval { $node->isa('Sweets::Tree::MultiPath::Node') };
 
     # Remove duplicated children at first.
     while ( my ($ns, $name) = each %{$node->names} ) {

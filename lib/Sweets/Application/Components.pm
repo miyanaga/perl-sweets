@@ -28,7 +28,7 @@ sub add {
     my $self = shift;
     my ( $c ) = @_;
 
-    die "Component whose id is " . $c->id . " has already exist"
+    Carp::confess("Component whose id is " . $c->id . " has already exist")
         if $self->dictionary->{$c->id};
 
     my $last = $self->last;
@@ -96,7 +96,7 @@ sub load_plugins {
                 path    => $fullpath,
             );
 
-            die "Plugin at $dir has no id" unless $plugin->id;
+            Carp::confess("Plugin at $dir has no id") unless $plugin->id;
 
             $plugins[$index] = $plugin;
             $plugins{$plugin->id} = $index;
