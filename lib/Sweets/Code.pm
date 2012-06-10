@@ -69,6 +69,16 @@ sub run {
     $ref->(@_);
 }
 
+sub bind {
+    my $self = shift;
+    my ( $pkg ) = @_;
+
+    eval '# line ' . __LINE__ . ' ' . __FILE__ . "\nrequire $pkg;"
+        or Carp::confess("failed loading package $pkg: $@");
+
+
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 

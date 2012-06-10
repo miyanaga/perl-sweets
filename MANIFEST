@@ -13,6 +13,9 @@ t/070-application-components.t
 t/080-code.t
 t/090-code-bad-cases.t
 t/100-callback.t
+t/110-code-binding.t
+t/lib/Sweets/Code/Test.pm
+t/lib/Sweets/Code/Test/Bound.pm
 lib/Sweets.pm
 lib/Sweets/Variant.pm
 lib/Sweets/Variant/Set.pm
@@ -25,3 +28,4 @@ lib/Sweets/Application/Components/Config.pm
 lib/Sweets/Code.pm
 lib/Sweets/Callback/Entry.pm
 lib/Sweets/Callback/Engine.pm
+lib/Sweets/Code/Binding.pm
