@@ -53,6 +53,12 @@ my $mixed = Sweets::Variant->new({
     is $mixed->_find(qw/a 0 b 0 c/)->_scalar, 1, 'Existing mixed path';
     is $mixed->_find(qw/a 0 b 0 c 0/)->_scalar, undef, 'Not existing mixed path';
     is $mixed->_find(qw/a b c/)->_scalar, undef, 'Not existing mixed path';
+
+}
+
+{
+    is $deep_hash->_find([qw/d a/], [qw/d b/], [qw/d c/])->_scalar, 1;
+    is $deep_hash->_find([qw/d a/], [qw/d b/], 'd')->_scalar, undef;
 }
 
 {

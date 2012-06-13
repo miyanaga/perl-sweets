@@ -29,8 +29,19 @@ sub bind {
 
 sub run {
     my $self = shift;
-    $self->SUPER::run( @_, $self->original );
+    my $pre_run = $self->pre_run( @_, $self->original );
+    return $pre_run if defined($pre_run);
+
+    my $result = $self->SUPER::run( @_, $self->original );
+
+    my $post_run = $self->post_run( $result, @_, $self->original );
+    return $post_run if defined($post_run);
+
+    $result;
 }
+
+sub pre_run { }
+sub post_run { }
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;

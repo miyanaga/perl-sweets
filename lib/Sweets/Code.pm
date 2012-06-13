@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Any::Moose;
+use Sweets::Package;
 
 has code => ( is => 'rw', isa => 'Any', default => 'sub {}', required => 1 );
 has ref => ( is => 'rw', isa => 'CodeRef' );
@@ -30,8 +31,7 @@ sub _eval_code {
         my $pkg = $1;
         my $method = $2;
 
-        eval '# line ' . __LINE__ . ' ' . __FILE__ . "\nrequire $pkg;"
-            or Carp::confess("failed loading package $pkg for $code: $@");
+        Sweets::Package->require($pkg);
         Carp::confess("$pkg can not run $method") unless $pkg->can($method);
 
         $self->ref( sub {
@@ -44,8 +44,7 @@ sub _eval_code {
         my $pkg = $1;
         my $method = $2;
 
-        eval '# line ' . __LINE__ . ' ' . __FILE__ . "\nrequire $pkg;"
-            or Carp::confess("failed loading package $pkg for $code: $@");
+        Sweets::Package->require($pkg);
         Carp::confess("$pkg can not run $method") unless $pkg->can($method);
 
         my $ref = \&$code;
@@ -67,16 +66,6 @@ sub run {
     my $ref = shift->ref;
     Carp::confess("tried to run not a code ref") if ref $ref ne 'CODE';
     $ref->(@_);
-}
-
-sub bind {
-    my $self = shift;
-    my ( $pkg ) = @_;
-
-    eval '# line ' . __LINE__ . ' ' . __FILE__ . "\nrequire $pkg;"
-        or Carp::confess("failed loading package $pkg: $@");
-
-
 }
 
 no Any::Moose;

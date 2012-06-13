@@ -129,23 +129,28 @@ sub _merge_hash {
 
 sub _find {
     my $raw = shift->_raw;
-    my ( $needle ) = @_;
 
     my $traverse = $raw;
-    for my $needle ( @_ ) {
+    TRAVERSE: for my $needle ( @_ ) {
         unless ( defined($needle) ) {
             $traverse = undef;
             last;
         }
 
-        if ( ref $traverse eq 'HASH' && defined($traverse->{$needle}) ) {
-            $traverse = $traverse->{$needle};
-        } elsif ( ref $traverse eq 'ARRAY' && $needle =~ /^[0-9]+$/ && defined($traverse->[$needle]) ) {
-            $traverse = $traverse->[$needle];
-        } else {
-            $traverse = undef;
-            last;
+        my @needles = ref $needle eq 'ARRAY'? @$needle: ($needle);
+        my $canditate;
+        NEEDLE: for my $n ( @needles ) {
+            if ( ref $traverse eq 'HASH' && defined($traverse->{$n}) ) {
+                $traverse = $traverse->{$n};
+                next TRAVERSE;
+            } elsif ( ref $traverse eq 'ARRAY' && $n =~ /^[0-9]+$/ && defined($traverse->[$n]) ) {
+                $traverse = $traverse->[$n];
+                next TRAVERSE;
+            }
         }
+
+        $traverse = undef;
+        last TRAVERSE;
     }
 
     return Sweets::Variant->new($traverse);

@@ -22,7 +22,7 @@ sub _cascade_find {
 }
 
 sub _cascade_at {
-    shift->_cascade_find_first($_[0]);
+    shift->_cascade_find($_[0]);
 }
 
 sub _cascade_set {

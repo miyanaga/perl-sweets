@@ -10,12 +10,15 @@ t/045-variant-yaml.t
 t/050-variant-cascading.t
 t/060-multi-path-node.t
 t/070-application-components.t
+t/075-package.t
 t/080-code.t
 t/090-code-bad-cases.t
 t/100-callback.t
 t/110-code-binding.t
+t/120-code-binding-wrap.t
 t/lib/Sweets/Code/Test.pm
 t/lib/Sweets/Code/Test/Bound.pm
+t/lib/Sweets/Code/Test/Wrap.pm
 lib/Sweets.pm
 lib/Sweets/Variant.pm
 lib/Sweets/Variant/Set.pm
@@ -25,6 +28,7 @@ lib/Sweets/Application/Components.pm
 lib/Sweets/Application/Component/Config.pm
 lib/Sweets/Application/Component/Plugin.pm
 lib/Sweets/Application/Components/Config.pm
+lib/Sweets/Package.pm
 lib/Sweets/Code.pm
 lib/Sweets/Callback/Entry.pm
 lib/Sweets/Callback/Engine.pm
