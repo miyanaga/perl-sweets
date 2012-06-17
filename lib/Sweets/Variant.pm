@@ -76,8 +76,6 @@ sub _array {
         @array = values %$value;
     } elsif ( !ref $value && length($value) ) {
         @array = split( /\s*,\s*/, $value );
-    } else {
-        return;
     }
 
     wantarray? @array: \@array;
