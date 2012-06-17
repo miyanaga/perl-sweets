@@ -65,6 +65,10 @@ after 'code' => sub {
 sub run {
     my $ref = shift->ref;
     Carp::confess("tried to run not a code ref") if ref $ref ne 'CODE';
+    if (wantarray) {
+        my @result = $ref->(@_);
+        return @result;
+    }
     $ref->(@_);
 }
 

@@ -29,15 +29,28 @@ sub bind {
 
 sub run {
     my $self = shift;
-    my $pre_run = $self->pre_run( @_, $self->original );
-    return $pre_run if defined($pre_run);
 
-    my $result = $self->SUPER::run( @_, $self->original );
+    if (wantarray) {
+        my @pre_run = $self->pre_run( @_, $self->original );
+        return @pre_run if @pre_run;
 
-    my $post_run = $self->post_run( $result, @_, $self->original );
-    return $post_run if defined($post_run);
+        my @result = $self->SUPER::run( @_, $self->original );
 
-    $result;
+        my @post_run = $self->post_run( \@result, @_, $self->original );
+        return @post_run if @post_run;
+
+        return @result;
+    } else {
+        my $pre_run = $self->pre_run( @_, $self->original );
+        return $pre_run if defined($pre_run);
+
+        my $result = $self->SUPER::run( @_, $self->original );
+
+        my $post_run = $self->post_run( $result, @_, $self->original );
+        return $post_run if defined($post_run);
+
+        return $result;
+    }
 }
 
 sub pre_run { }
