@@ -59,7 +59,7 @@ sub _run_through {
     if ( my $priorities = $self->events->{$event} ) {
         CHAIN: foreach my $chain ( grep { defined $_ } @$priorities ) {
             foreach my $entry ( grep { defined $_ } @$chain ) {
-                my $result = $entry->code->( $entry, @_ );
+                my $result = $entry->run( $entry, @_ );
                 push @results, $result if defined $result;
                 last CHAIN if $finish->($result, $entry);
             }
