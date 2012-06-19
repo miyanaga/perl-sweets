@@ -16,6 +16,7 @@ t/090-code-bad-cases.t
 t/100-callback.t
 t/110-code-binding.t
 t/120-code-binding-wrap.t
+t/130-pager.t
 t/lib/Sweets/Code/Test.pm
 t/lib/Sweets/Code/Test/Bound.pm
 t/lib/Sweets/Code/Test/Wrap.pm
@@ -30,6 +31,10 @@ lib/Sweets/Application/Component/Plugin.pm
 lib/Sweets/Application/Components/Config.pm
 lib/Sweets/Package.pm
 lib/Sweets/Code.pm
+lib/Sweets/Code/Binding.pm
+lib/Sweets/Callback.pm
 lib/Sweets/Callback/Entry.pm
 lib/Sweets/Callback/Engine.pm
-lib/Sweets/Code/Binding.pm
+lib/Sweets/Pager.pm
+lib/Sweets/Pager/Request.pm
+lib/Sweets/Pager/Result.pm

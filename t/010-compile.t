@@ -22,6 +22,12 @@ use_ok('Sweets::Application::Component::Plugin');
 use_ok('Sweets::Application::Components');
 use_ok('Sweets::Application::Components::Config');
 
+use_ok('Sweets::Package');
+use_ok('Sweets::Code');
+use_ok('Sweets::Code::Binding');
+use_ok('Sweets::Callback');
+use_ok('Sweets::Pager');
+
 done_testing;
 
 #########################
