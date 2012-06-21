@@ -8,7 +8,7 @@ use Any::Moose;
 
 has container => ( is => 'rw', isa => 'Sweets::Application::Components' );
 
-sub _cascade_to {
+sub cascade_to {
     my $c = shift->container || return;
     my $last = $c->last || return;
     $last->config;

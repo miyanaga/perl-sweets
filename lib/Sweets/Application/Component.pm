@@ -17,9 +17,9 @@ has config => ( is => 'ro', isa => 'Sweets::Application::Component::Config', laz
 
     for my $path ( @{$self->container->config_paths} ) {
         my $fullpath = File::Spec->catdir($self->path, $path);
-        my $yaml = Sweets::Variant->_load_yaml($fullpath)->_hash || next;
+        my $yaml = Sweets::Variant->load_yaml($fullpath)->as_hash || next;
 
-        $config->_merge_hash($yaml);
+        $config->merge_hash($yaml);
     }
 
     $config;
@@ -27,7 +27,7 @@ has config => ( is => 'ro', isa => 'Sweets::Application::Component::Config', laz
 has chain_next => ( is => 'rw', isa => 'Sweets::Application::Component' );
 has chain_prev => ( is => 'rw', isa => 'Sweets::Application::Component' );
 has id => ( is => 'ro', isa => 'Str', lazy_build => 1, builder => sub {
-    shift->config->id->_scalar;
+    shift->config->id->as_scalar;
 });
 
 sub BUILD {

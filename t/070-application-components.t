@@ -50,19 +50,19 @@ my $private = $components->component('private');
 }
 
 {
-    is $core->config->_find(qw/private_overrides here/)->_scalar, 'core';
-    is $buildin1->config->_find(qw/private_overrides here/)->_scalar, 'buildin1';
-    is $common->config->_find(qw/private_overrides here/)->_scalar, 'plugin_common';
-    is $plugin1->config->_find(qw/private_overrides here/)->_scalar, 'plugin1';
-    is $private->config->_find(qw/private_overrides here/)->_scalar, 'private';
+    is $core->config->find(qw/private_overrides here/)->as_scalar, 'core';
+    is $buildin1->config->find(qw/private_overrides here/)->as_scalar, 'buildin1';
+    is $common->config->find(qw/private_overrides here/)->as_scalar, 'plugin_common';
+    is $plugin1->config->find(qw/private_overrides here/)->as_scalar, 'plugin1';
+    is $private->config->find(qw/private_overrides here/)->as_scalar, 'private';
 }
 
 {
-    is $components->config->_cascade_find(qw/only_core here/)->_scalar, 'core';
-    is $components->config->_cascade_find(qw/buildin_overrides here/)->_scalar, 'buildin1';
-    is $components->config->_cascade_find(qw/common_overrides here/)->_scalar, 'plugin_common';
-    is $components->config->_cascade_find(qw/plugin_overrides here/)->_scalar, 'plugin1';
-    is $components->config->_cascade_find(qw/private_overrides here/)->_scalar, 'private';
+    is $components->config->cascade_find(qw/only_core here/)->as_scalar, 'core';
+    is $components->config->cascade_find(qw/buildin_overrides here/)->as_scalar, 'buildin1';
+    is $components->config->cascade_find(qw/common_overrides here/)->as_scalar, 'plugin_common';
+    is $components->config->cascade_find(qw/plugin_overrides here/)->as_scalar, 'plugin1';
+    is $components->config->cascade_find(qw/private_overrides here/)->as_scalar, 'private';
 }
 
 {

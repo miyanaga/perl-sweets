@@ -4,7 +4,6 @@ MANIFEST
 README
 t/010-compile.t
 t/020-variant.t
-t/030-variant-as-variant.t
 t/040-variant-find.t
 t/045-variant-yaml.t
 t/050-variant-cascading.t
@@ -17,6 +16,7 @@ t/100-callback.t
 t/110-code-binding.t
 t/120-code-binding-wrap.t
 t/130-pager.t
+t/140-string.t
 t/lib/Sweets/Code/Test.pm
 t/lib/Sweets/Code/Test/Bound.pm
 t/lib/Sweets/Code/Test/Wrap.pm
@@ -38,3 +38,4 @@ lib/Sweets/Callback/Engine.pm
 lib/Sweets/Pager.pm
 lib/Sweets/Pager/Request.pm
 lib/Sweets/Pager/Result.pm
+lib/Sweets/String.pm

@@ -7,32 +7,32 @@ use parent 'Sweets::Variant';
 use Any::Moose;
 use Sweets::Variant::Set;
 
-has _cascade_to => ( is => 'rw', isa => 'Sweets::Variant::Cascading' );
+has cascade_to => ( is => 'rw', isa => 'Sweets::Variant::Cascading' );
 
-sub _cascade_find {
+sub cascade_find {
     my $variant = shift;
     my $pkg = ref $variant;
     while ( $variant ) {
-        if ( my $found = $variant->_find(@_)->_is_defined ) {
+        if ( my $found = $variant->find(@_)->is_defined ) {
             return $found;
         }
-        $variant = $variant->_cascade_to;
+        $variant = $variant->cascade_to;
     }
     Sweets::Variant->new;
 }
 
-sub _cascade_at {
-    shift->_cascade_find($_[0]);
+sub cascade_at {
+    shift->cascade_find($_[0]);
 }
 
-sub _cascade_set {
+sub cascade_set {
     my $variant = shift;
     my @set;
     while ( $variant ) {
-        if ( my $found = $variant->_find(@_)->_is_defined ) {
+        if ( my $found = $variant->find(@_)->is_defined ) {
             push @set, $found;
         }
-        $variant = $variant->_cascade_to;
+        $variant = $variant->cascade_to;
     }
 
     Sweets::Variant::Set->new(@set);

@@ -13,44 +13,44 @@ my $backup = Sweets::Variant->new({
 });
 
 {
-    my $yaml = $backup->_to_yaml;
+    my $yaml = $backup->to_yaml;
 
-    my $restore = Sweets::Variant->new->_from_yaml($yaml);
-    is $restore->a->_scalar, 1;
-    is $restore->c->d->_scalar, 2;
+    my $restore = Sweets::Variant->new->from_yaml($yaml);
+    is $restore->find('a')->as_scalar, 1;
+    is $restore->find(qw/c d/)->as_scalar, 2;
 
-    my $class_method = Sweets::Variant->_from_yaml($yaml);
-    is $class_method->a->_scalar, 1;
-    is $class_method->c->d->_scalar, 2;
+    my $class_method = Sweets::Variant->from_yaml($yaml);
+    is $class_method->find(qw/a/)->as_scalar, 1;
+    is $class_method->find(qw/c d/)->as_scalar, 2;
 }
 
 {
     my $file = 'backup.yaml';
-    $backup->_save_yaml($file);
+    $backup->save_yaml($file);
 
-    my $restore = Sweets::Variant->new->_load_yaml($file);
-    is $restore->a->_scalar, 1;
-    is $restore->c->d->_scalar, 2;
+    my $restore = Sweets::Variant->new->load_yaml($file);
+    is $restore->find(qw/a/)->as_scalar, 1;
+    is $restore->find(qw/c d/)->as_scalar, 2;
 
-    my $class_method = Sweets::Variant->_load_yaml($file);
-    is $class_method->a->_scalar, 1;
-    is $class_method->c->d->_scalar, 2;
+    my $class_method = Sweets::Variant->load_yaml($file);
+    is $class_method->find(qw/a/)->as_scalar, 1;
+    is $class_method->find(qw/c d/)->as_scalar, 2;
 
     unlink $file;
 }
 
 {
     my $scalar = Sweets::Variant->new(1);
-    my $yaml = $scalar->_to_yaml;
-    my $restore = Sweets::Variant->_from_yaml($yaml);
-    is_deeply $restore->_raw, $scalar->_raw;
+    my $yaml = $scalar->to_yaml;
+    my $restore = Sweets::Variant->from_yaml($yaml);
+    is_deeply $restore->raw, $scalar->raw;
 }
 
 {
     my $array = Sweets::Variant->new([1,2,3]);
-    my $yaml = $array->_to_yaml;
-    my $restore = Sweets::Variant->_from_yaml($yaml);
-    is_deeply $restore->_raw, $array->_raw;
+    my $yaml = $array->to_yaml;
+    my $restore = Sweets::Variant->from_yaml($yaml);
+    is_deeply $restore->raw, $array->raw;
 }
 
 {
@@ -61,16 +61,16 @@ my $backup = Sweets::Variant->new({
         },
     });
 
-    $override->_merge_hash({
+    $override->merge_hash({
         a => 2,
         b => {
             d => 3,
         },
     });
 
-    is $override->a->_scalar, 2;
-    is $override->b->c->_scalar, 2;
-    is $override->b->d->_scalar, 3;
+    is $override->find(qw/a/)->as_scalar, 2;
+    is $override->find(qw/b c/)->as_scalar, 2;
+    is $override->find(qw/b d/)->as_scalar, 3;
 }
 
 {
@@ -81,16 +81,16 @@ my $backup = Sweets::Variant->new({
         },
     });
 
-    $no_override->_merge_hash({
+    $no_override->merge_hash({
         a => 2,
         b => {
             d => 3,
         },
     }, 0);
 
-    is $no_override->a->_scalar, 1;
-    is $no_override->b->c->_scalar, 2;
-    is $no_override->b->d->_scalar, 3;
+    is $no_override->find(qw/a/)->as_scalar, 1;
+    is $no_override->find(qw/b c/)->as_scalar, 2;
+    is $no_override->find(qw/b d/)->as_scalar, 3;
 }
 
 done_testing;
