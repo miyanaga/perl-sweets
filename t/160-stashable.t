@@ -40,6 +40,13 @@ use Test::More;
 
     $stashable->object_stash($object, 'KEY', $array);
     is $stashable->object_stash($object, 'KEY'), $array;
+
+    $stashable->clear_stashes;
+    is $stashable->stash('KEY'), undef;
+    is $stashable->stash('ARRAY'), undef;
+    is $stashable->object_stash($scalar, 'KEY'), undef;
+    is $stashable->object_stash($hash, 'KEY'), undef;
+    is $stashable->object_stash($object, 'KEY'), undef;
 }
 
 done_testing;

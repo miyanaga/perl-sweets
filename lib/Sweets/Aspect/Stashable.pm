@@ -31,6 +31,12 @@ sub object_stash {
     $self->object_stash_store->{$object}{$key};
 }
 
+sub clear_stashes {
+    my $self = shift;
+    $self->clear_stash_store;
+    $self->clear_object_stash_store;
+}
+
 no Any::Moose;
 
 1;
