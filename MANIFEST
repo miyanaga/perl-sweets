@@ -17,6 +17,7 @@ t/110-code-binding.t
 t/120-code-binding-wrap.t
 t/130-pager.t
 t/140-string.t
+t/150-helper-html.t
 t/lib/Sweets/Code/Test.pm
 t/lib/Sweets/Code/Test/Bound.pm
 t/lib/Sweets/Code/Test/Wrap.pm
@@ -39,3 +40,4 @@ lib/Sweets/Pager.pm
 lib/Sweets/Pager/Request.pm
 lib/Sweets/Pager/Result.pm
 lib/Sweets/String.pm
+lib/Sweets/Helper/HTML.pm

@@ -2,7 +2,13 @@ use strict;
 use warnings;
 
 use Test::More;
-use Sweets::String qw(utf8_substr utf8_length utf8_ellipsis);
+use Sweets::String qw(trim utf8_substr utf8_length utf8_ellipsis);
+
+{
+    is trim('abcd'), 'abcd';
+    is trim(' abcd'), 'abcd';
+    is trim('  abcd  '), 'abcd';
+}
 
 {
     my $str = 'abcdefghij';

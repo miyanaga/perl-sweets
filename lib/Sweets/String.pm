@@ -5,7 +5,13 @@ use warnings;
 use utf8;
 use base 'Exporter';
 
-our @EXPORT_OK = qw(utf8_substr utf8_length utf8_ellipsis);
+our @EXPORT_OK = qw(trim utf8_substr utf8_length utf8_ellipsis);
+
+sub trim {
+    $_ = shift || return '';
+    s/^(\s+)|(\s+)$//g;
+    $_;
+}
 
 sub utf8_substr {
     my ( $str, $o, $l, $r ) = @_;
