@@ -9,6 +9,7 @@ use URI::Escape;
 use JavaScript::Value::Escape;
 
 has xhtml => ( is => 'rw', isa => 'Bool', default => 0 );
+has query_delimiter => ( is => 'rw', isa => 'Str', default => ',' );
 
 sub escape_html {
     my $self = shift;
@@ -16,7 +17,7 @@ sub escape_html {
     HTML::Entities::encode_entities($html);
 }
 
-sub escape_uri {
+sub escape_url {
     my $self = shift;
     my ( $uri ) = @_;
     uri_escape($uri);
@@ -86,6 +87,41 @@ sub element {
     $html .= $inner . '</' . $tag . '>' if $inner;
 
     $html;
+}
+
+sub url {
+    my $self = shift;
+    my ( $base, $queries, $hash ) = @_;
+
+    $base ||= '';
+    if ( ref $queries eq 'HASH' ) {
+        my @pairs;
+        my $delim = $self->query_delimiter;
+        for my $name ( sort { $a cmp $b } keys %$queries ) {
+            next unless $name;
+            my $value = $queries->{$name};
+
+            $name = $self->escape_url($name);
+            push @pairs, ref $value eq 'ARRAY'
+                ? join('=', $name, $self->escape_url(join($delim, @$value)))
+                : $value && !ref $value
+                    ? $name . '=' . $self->escape_url($value)
+                    : $name;
+        }
+        $queries = \@pairs;
+    }
+
+    if ( ref $queries eq 'ARRAY' ) {
+        $queries = join('&', grep { $_ } @$queries);
+    }
+
+    if ( $queries && !ref $queries ) {
+        $base .= '?' unless $base =~ /\?/;
+        $base .= $queries;
+    }
+
+    $base .= '#' . $hash if defined($hash);
+    $base;
 }
 
 no Any::Moose;
