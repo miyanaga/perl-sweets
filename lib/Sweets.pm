@@ -26,7 +26,7 @@ our @EXPORT = qw(
 
 );
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 our $DEFAULT_ORDER = 1000;
 our $DEFAULT_SORTER = 'order';
