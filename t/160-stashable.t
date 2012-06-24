@@ -16,6 +16,7 @@ use Test::More;
     my $stashable = Stashable->new;
 
     is $stashable->stash('KEY'), undef;
+    is $stashable->stash_or('KEY', 'DEFAULT'), 'DEFAULT';
     $stashable->stash('KEY', 'VALUE');
     is $stashable->stash('KEY'), 'VALUE';
 
@@ -25,6 +26,8 @@ use Test::More;
     is $stashable->stash('KEY'), 'VALUE';
 
     my $scalar = 'SCALAR';
+    is $stashable->object_stash($scalar, 'KEY'), undef;
+    is $stashable->object_stash_or($scalar, 'KEY', 'DEFAULT'), 'DEFAULT';
     $stashable->object_stash($scalar, 'KEY', $array);
     is $stashable->object_stash($scalar, 'KEY'), $array;
 
@@ -47,6 +50,16 @@ use Test::More;
     is $stashable->object_stash($scalar, 'KEY'), undef;
     is $stashable->object_stash($hash, 'KEY'), undef;
     is $stashable->object_stash($object, 'KEY'), undef;
+
+    is $stashable->stash_or('KEY', 'DEFAULT'), 'DEFAULT';
+    is $stashable->stash('KEY'), undef;
+    is $stashable->stash_or('KEY', 'DEFAULT', 1), 'DEFAULT';
+    is $stashable->stash('KEY'), 'DEFAULT';
+
+    is $stashable->object_stash_or($object, 'KEY', 'DEFAULT'), 'DEFAULT';
+    is $stashable->object_stash($object, 'KEY'), undef;
+    is $stashable->object_stash_or($object, 'KEY', 'DEFAULT', 1), 'DEFAULT';
+    is $stashable->object_stash($object, 'KEY'), 'DEFAULT';
 }
 
 done_testing;

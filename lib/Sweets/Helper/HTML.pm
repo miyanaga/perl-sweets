@@ -3,6 +3,7 @@ package Sweets::Helper::HTML;
 use strict;
 use warnings;
 
+use Encode;
 use Any::Moose;
 use HTML::Entities;
 use URI::Escape;
@@ -14,18 +15,22 @@ has query_delimiter => ( is => 'rw', isa => 'Str', default => ',' );
 sub escape_html {
     my $self = shift;
     my ( $html ) = @_;
+    defined($html) || return '';
     HTML::Entities::encode_entities($html);
 }
 
 sub escape_url {
     my $self = shift;
-    my ( $uri ) = @_;
-    uri_escape($uri);
+    my ( $url ) = @_;
+    defined($url) || return '';
+    $url = Encode::encode_utf8($url) if utf8::is_utf8($url);
+    uri_escape($url);
 }
 
 sub escape_js {
     my $self = shift;
     my ( $str ) = @_;
+    defined($str) || return '';
     javascript_value_escape($str);
 }
 
@@ -39,12 +44,18 @@ sub element {
     my $xhtml = $self->xhtml;
     $xhtml = $args{xhtml} if defined $args{xhtml};
 
-    # inner
-    my $inner = $args{inner};
-    if ( $inner ) {
-        Carp::confess('inner must be a code')
-            if ref $inner eq '' && ref $inner eq 'CODE';
-        $inner = $inner->() if ref $inner eq 'CODE';
+    # prepend, inner, append
+    my $inner;
+    for my $key ( qw/prepend inner append/ ) {
+        my $partial = $args{$key};
+        next unless defined($partial);
+
+        Carp::confess("$key for element helper must be a scalar or code")
+            if ref $partial ne '' && ref $partial ne 'CODE';
+        $partial = $partial->() if ref $partial eq 'CODE';
+
+        $inner ||= '';
+        $inner .= $partial;
     }
 
     # tag
@@ -84,7 +95,7 @@ sub element {
 
     # open tag, inner and close tag.
     my $html = '<' . join(' ', @html) . '>';
-    $html .= $inner . '</' . $tag . '>' if $inner;
+    $html .= $inner . '</' . $tag . '>' if defined($inner);
 
     $html;
 }

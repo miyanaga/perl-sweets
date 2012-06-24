@@ -27,6 +27,8 @@ use Sweets::Helper::HTML;
 
     is $helper->element('a', attr => { href => '/test/' }, inner => 'ANCHOR'), '<a href="/test/">ANCHOR</a>';
     is $helper->element('a', attr => { href => '/test/' }, inner => sub { 'ANCHOR' }), '<a href="/test/">ANCHOR</a>';
+
+    is $helper->element('a', attr => { href => '/test/' }, prepend => 'PREPEND/', inner => sub { 'INNER/' }, append => sub { 'APPEND' } ), '<a href="/test/">PREPEND/INNER/APPEND</a>';
 }
 
 {

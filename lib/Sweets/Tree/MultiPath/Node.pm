@@ -130,9 +130,13 @@ sub build_path {
 sub sorted_children {
     my $self = shift;
 
-    my @children = sort {
-        $a->order <=> $b->order
-    } values %{$self->children(@_)};
+    my @children;
+    my $children = $self->children(@_);
+    if ( ref $children eq 'HASH' ) {
+        @children = sort {
+            $a->order <=> $b->order
+        } values %$children;
+    }
 
     wantarray? @children: \@children;
 }
