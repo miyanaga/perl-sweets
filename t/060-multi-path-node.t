@@ -45,6 +45,25 @@ my $no_child11_filter = sub {
 };
 
 {
+    is $child11->is_in_path('first'), 1;
+    is $child11->is_in_path('first', qw/root/), 1;
+    is $child11->is_in_path('first', qw/root child1/), 1;
+    is $child11->is_in_path('first', qw/root child1 child11/), 1;
+    is $child11->is_in_path('first', qw/root child1 child11 child111/), 1;
+    is $child11->is_in_path('first', qw/root child1 child12/), 0;
+    is $child11->is_in_path('first', qw/root child2/), 0;
+    is $child11->is_in_path('first', qw/another/), 0;
+
+    is $child11->is_in_path('second', qw/ROOT/), 1;
+    is $child11->is_in_path('second', qw/ROOT CHILD1/), 1;
+    is $child11->is_in_path('second', qw/ROOT CHILD1 CHILD11/), 1;
+    is $child11->is_in_path('second', qw/ROOT CHILD1 CHILD11 CHILD111/), 1;
+    is $child11->is_in_path('second', qw/ROOT CHILD1 CHILD12/), 0;
+    is $child11->is_in_path('second', qw/ROOT CHILD2/), 0;
+    is $child11->is_in_path('second', qw/ANOTHER/), 0;
+}
+
+{
     $root->name('third', 'Root');
     is $root->name('third'), 'Root';
 }

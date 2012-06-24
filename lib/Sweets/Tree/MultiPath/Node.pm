@@ -117,6 +117,19 @@ sub parent_at {
     $traverse[$depth];
 }
 
+sub is_in_path {
+    my $self = shift;
+    my $ns = shift || $DEFAULT_NS;
+
+    my @paths = map { $_->name($ns) || '' } reverse $self->parents_and_self;
+    for ( my $i = 0; $i < scalar @paths; $i++ ) {
+        return 1 unless defined($_[$i]);
+        return 0 if $_[$i] ne $paths[$i];
+    }
+
+    return 1;
+}
+
 sub build_path {
     my $self = shift;
     my ( $ns, $separator ) = @_;

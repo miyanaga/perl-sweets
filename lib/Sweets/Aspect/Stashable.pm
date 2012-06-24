@@ -22,7 +22,7 @@ sub stash_or {
     my $self = shift;
     my ( $key, $default, $set ) = @_;
 
-    Carp::confess('stash_or required a default') unless $default;
+    Carp::confess('stash_or required a default') unless defined($default);
 
     my $value = $self->stash($key);
     return $value if defined($value);
@@ -49,7 +49,7 @@ sub object_stash_or {
     my $object = scalar shift;
     my ( $key, $default, $set ) = @_;
 
-    Carp::confess('object_stash_or required a default') unless $default;
+    Carp::confess('object_stash_or required a default') unless defined($default);
 
     my $value = $self->object_stash($key, $default);
     return $value if defined($value);
