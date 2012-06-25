@@ -3,7 +3,7 @@ package Stashable;
 use strict;
 use warnings;
 use lib 'blib';
-use parent 'Sweets::Aspect::Stashable';
+use parent 'Sweets::Aspect::Stashable::AnyEvent';
 
 package main;
 
@@ -11,9 +11,12 @@ use strict;
 use warnings;
 
 use Test::More;
+use AnyEvent;
 
 {
-    my $stashable = Stashable->new;
+    my $stashable = Stashable->new(
+        stash_expires => 0.5,
+    );
 
     is $stashable->stash('KEY'), undef;
     is $stashable->stash_or('KEY', 'DEFAULT'), 'DEFAULT';
@@ -51,15 +54,28 @@ use Test::More;
     is $stashable->object_stash($hash, 'KEY'), undef;
     is $stashable->object_stash($object, 'KEY'), undef;
 
-    is $stashable->stash_or('KEY', 'DEFAULT'), 'DEFAULT';
-    is $stashable->stash('KEY'), undef;
     is $stashable->stash_or('KEY', 'DEFAULT', 1), 'DEFAULT';
+    is $stashable->stash('KEY'), undef;
+    is $stashable->stash_or('KEY', 'DEFAULT'), 'DEFAULT';
     is $stashable->stash('KEY'), 'DEFAULT';
 
-    is $stashable->object_stash_or($object, 'KEY', 'DEFAULT'), 'DEFAULT';
-    is $stashable->object_stash($object, 'KEY'), undef;
     is $stashable->object_stash_or($object, 'KEY', 'DEFAULT', 1), 'DEFAULT';
+    is $stashable->object_stash($object, 'KEY'), undef;
+    is $stashable->object_stash_or($object, 'KEY', 'DEFAULT'), 'DEFAULT';
     is $stashable->object_stash($object, 'KEY'), 'DEFAULT';
+
+    my $cv = AnyEvent->condvar;
+    my $timer; $timer = AnyEvent->timer(
+        after => 0.5,
+        cb => sub {
+            $cv->send;
+        }
+    );
+
+    $cv->recv;
+
+    is $stashable->stash('KEY'), undef;
+    is $stashable->object_stash($object, 'KEY'), undef;
 }
 
 done_testing;
