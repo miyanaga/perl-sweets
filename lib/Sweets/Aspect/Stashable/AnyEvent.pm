@@ -11,12 +11,12 @@ use AnyEvent;
 has stash_interval => ( is => 'ro', isa => 'Num', lazy_build => 1, builder => sub {
     shift->stash_expires;
 } );
-has stash_gc => ( is => 'ro', isa => 'EV::Timer', default => sub {
+has stash_gc => ( is => 'ro', isa => 'Any', default => sub {
     my $self = shift;
-    my $timer = AnyEvent->timer(
-        after => $self->stash_interval,
-        interval => $self->stash_interval,
-        cb => sub {
+    my $timer = AE::timer(
+        $self->stash_interval,
+        $self->stash_interval,
+        sub {
             $self->cleanup_stashes;
         },
     );
