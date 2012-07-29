@@ -51,7 +51,11 @@ sub find {
     my $name = shift;
     return $self unless defined $name;
 
-    if ( my $child = $self->namespaces->{$ns}->{$name} ) {
+    if ( $name eq '..' ) {
+        return $self->parent || $self;
+    } elsif ( $name eq '.' ) {
+        return $self;
+    } elsif ( my $child = $self->namespaces->{$ns}->{$name} ) {
         return $child->find($ns, @_);
     }
 

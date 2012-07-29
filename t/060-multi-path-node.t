@@ -103,6 +103,17 @@ my $no_child11_filter = sub {
 }
 
 {
+    my $myself = $child1->find('first', '.');
+    is $myself, $child1;
+
+    my $parent = $child1->find('first', '..');
+    is $parent, $root;
+
+    $parent = $root->find('first', '..');
+    is $parent, $root;
+}
+
+{
     my $parents = $child11->parents;
     is_deeply $parents, [ $child1, $root ];
 
