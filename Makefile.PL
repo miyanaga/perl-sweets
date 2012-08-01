@@ -1,7 +1,22 @@
 use 5.010;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
+use lib 'inc';
+use ExtUtils::AutoInstall (
+  -core => [
+    'Any::Moose' => '',
+    'AnyEvent' => '',
+    'Carp' => '',
+    'Encode' => '',
+    'Exporter' => '',
+    'File::Spec' => '',
+    'Hash::Merge' => '',
+    'HTML::Entities' => '',
+    'JavaScript::Value::Escape' => '',
+    'Moose' => '',
+    'Try::Tiny' => '',
+    'URI::Escape' => '',
+    'YAML::Syck' => '',
+  ]
+);
 WriteMakefile(
     NAME              => 'Sweets',
     VERSION_FROM      => 'lib/Sweets.pm', # finds $VERSION

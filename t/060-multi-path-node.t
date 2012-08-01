@@ -111,6 +111,11 @@ my $no_child11_filter = sub {
 
     $parent = $root->find('first', '..');
     is $parent, $root;
+
+    is $child11->find('first', '..', '..'), $root;
+    is $child11->find('first', '..', '..', '..'), $root;
+    is $child11->find('first', '..', 'child12'), $child12;
+    is $child11->find('first', '..', '..', 'child2'), $child2;
 }
 
 {

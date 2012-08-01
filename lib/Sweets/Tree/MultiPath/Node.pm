@@ -52,9 +52,9 @@ sub find {
     return $self unless defined $name;
 
     if ( $name eq '..' ) {
-        return $self->parent || $self;
+        return $self->parent? $self->parent->find($ns, @_): $self;
     } elsif ( $name eq '.' ) {
-        return $self;
+        return $self->find($ns, @_);
     } elsif ( my $child = $self->namespaces->{$ns}->{$name} ) {
         return $child->find($ns, @_);
     }
