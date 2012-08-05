@@ -187,6 +187,34 @@ sub save_yaml {
     YAML::Syck::DumpFile($file, $self->raw);
 }
 
+sub from_doc {
+    my $self = shift;
+    $self = $self->new unless ref $self;
+    my ( $doc ) = @_;
+
+    my %values;
+    while ( $doc =~ /(?<!\\)\@(.+?)(?<!\\)\n/igs ) {
+        my ( $name, $value ) = split( /\s+/, $1, 2 );
+        $value =~ s/\\([\n\@])/$1/g;
+
+        if ( $name =~ m!/! ) {
+            my @dig = grep { $_ } split m!/!, $name;
+            $name = pop @dig;
+
+            my $hash = \%values;
+            for my $p ( @dig ) {
+                $hash = ( $hash->{$p} ||= {} );
+            }
+            $hash->{$name} = $value;
+        } else {
+            $values{$name} = $value;
+        }
+    }
+
+    $self->raw(\%values);
+    $self;
+}
+
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 
