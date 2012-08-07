@@ -38,7 +38,7 @@ DOC
 }
 
 {
-    my $var = Sweets::Variant->from_javadoc('value1 Not end with new line');
+    my $var = Sweets::Variant->from_javadoc('@value1 Not end with new line');
     is_deeply $var->as_hash, {
         value1 => 'Not end with new line'
     };
