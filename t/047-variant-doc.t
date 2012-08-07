@@ -5,7 +5,7 @@ use Sweets::Variant;
 use Test::More;
 
 {
-    my $var = Sweets::Variant->from_doc(<<'DOC');
+    my $var = Sweets::Variant->from_javadoc(<<'DOC');
 @value1 VALUE1
     @value2 VALUE 2
 @value3 INCLUDE \@
@@ -13,6 +13,7 @@ use Test::More;
 BREAK
 @hash/value5 VALUE5
 @hash/child/value6 VALUE6
+@value7: WITH COLON
 DOC
 
     is_deeply $var->as_hash, {
@@ -26,6 +27,7 @@ DOC
                 value6 => 'VALUE6',
             },
         },
+        value7 => 'WITH COLON',
     };
 }
 

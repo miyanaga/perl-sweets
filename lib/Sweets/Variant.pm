@@ -187,7 +187,7 @@ sub save_yaml {
     YAML::Syck::DumpFile($file, $self->raw);
 }
 
-sub from_doc {
+sub from_javadoc {
     my $self = shift;
     $self = $self->new unless ref $self;
     my ( $doc ) = @_;
@@ -196,6 +196,7 @@ sub from_doc {
     while ( $doc =~ /(?<!\\)\@(.+?)(?<!\\)\n/igs ) {
         my ( $name, $value ) = split( /\s+/, $1, 2 );
         $value =~ s/\\([\n\@])/$1/g;
+        $name =~ s/:+$//;
 
         if ( $name =~ m!/! ) {
             my @dig = grep { $_ } split m!/!, $name;
