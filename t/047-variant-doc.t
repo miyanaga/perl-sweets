@@ -14,6 +14,9 @@ BREAK
 @hash/value5 VALUE5
 @hash/child/value6 VALUE6
 @value7: WITH COLON
+@value.8 WITH DOT
+@value,9 WITH COMMA
+@value.10: WITH COMMA AND COLON
 DOC
 
     is_deeply $var->as_hash, {
@@ -28,6 +31,16 @@ DOC
             },
         },
         value7 => 'WITH COLON',
+        'value.8' => 'WITH DOT',
+        'value,9' => 'WITH COMMA',
+        'value.10' => 'WITH COMMA AND COLON',
+    };
+}
+
+{
+    my $var = Sweets::Variant->from_javadoc('value1 Not end with new line');
+    is_deeply $var->as_hash, {
+        value1 => 'Not end with new line'
     };
 }
 

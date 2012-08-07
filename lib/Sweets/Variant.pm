@@ -191,6 +191,7 @@ sub from_javadoc {
     my $self = shift;
     $self = $self->new unless ref $self;
     my ( $doc ) = @_;
+    $doc .= "\n" if substr($doc, -1, 1) ne "\n";
 
     my %values;
     while ( $doc =~ /(?<!\\)\@(.+?)(?<!\\)\n/igs ) {
