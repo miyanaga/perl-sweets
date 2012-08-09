@@ -90,7 +90,7 @@ sub remove {
         delete $self->hash->{$key};
     }
 
-    @values;
+    wantarray? @values: shift @values;
 }
 
 sub build_on {

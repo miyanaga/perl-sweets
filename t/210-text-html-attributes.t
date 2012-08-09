@@ -71,6 +71,12 @@ subtest 'Modify on Parser' => sub {
     is_deeply $parser->as_hash, {
         name1 => 'VALUE1',
     };
+
+    my $removed = $parser->remove('name1');
+    is $removed, 'VALUE1';
+
+    is_deeply $parser->as_array, [];
+    is_deeply $parser->as_hash, {};
 };
 
 subtest 'Parse and Build' => sub {
