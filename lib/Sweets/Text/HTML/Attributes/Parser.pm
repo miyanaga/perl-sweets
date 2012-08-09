@@ -56,6 +56,43 @@ sub as_hash {
     shift->hash;
 }
 
+sub lookup {
+    my $self = shift;
+    my $key = shift || '';
+    $self->hash->{$key};
+}
+
+sub find_all {
+    my $self = shift;
+    my $key = shift || '';
+    my @values = map {
+        $_->{value};
+    } grep { $_ && $_->{name} eq $key } @{$self->array};
+
+    wantarray? @values: \@values;
+}
+
+sub remove {
+    my $self = shift;
+    my %keys = map { $_ => 1 } @_;
+    my @values;
+
+    for ( my $i = 0; $i < scalar @{$self->array}; $i++ ) {
+        my $pair = $self->array->[$i] || next;
+        next unless defined $pair->{name};
+        next unless $keys{$pair->{name}};
+        my $value = $pair->{value};
+
+        push @values, $value;
+        delete $self->array->[$i];
+    }
+    for my $key ( keys %keys ) {
+        delete $self->hash->{$key};
+    }
+
+    @values;
+}
+
 sub build_on {
     my $self = shift;
     Sweets::Text::HTML::Attributes::Builder->new(

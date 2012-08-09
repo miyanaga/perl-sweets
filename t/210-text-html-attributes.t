@@ -37,6 +37,42 @@ BROKEN" NONAME 'NONAME SINGLE QUOTED' "NONAME DOUBLE QUOTED"
     ];
 };
 
+subtest 'Modify on Parser' => sub {
+    my $parser = Sweets::Text::HTML::Attributes::Parser->new(
+        raw => q{name1=VALUE1 name2=VALUE2 name2=VALUE2-2 name3=VALUE3}
+    );
+
+    is_deeply $parser->as_hash, {
+        name1   => 'VALUE1',
+        name2   => 'VALUE2-2',
+        name3   => 'VALUE3',
+    };
+    is_deeply $parser->as_array, [
+        { name => 'name1', value => 'VALUE1' },
+        { name => 'name2', value => 'VALUE2' },
+        { name => 'name2', value => 'VALUE2-2' },
+        { name => 'name3', value => 'VALUE3' },
+    ];
+
+    is $parser->lookup('name1'), 'VALUE1';
+    is $parser->lookup('name2'), 'VALUE2-2';
+    is $parser->lookup('name3'), 'VALUE3';
+
+    my @found = $parser->find_all('name2');
+    is_deeply \@found, [ qw/VALUE2 VALUE2-2/ ];
+    my $found = $parser->find_all('name2');
+    is_deeply $found, [ qw/VALUE2 VALUE2-2/ ];
+
+    my @values = $parser->remove( 'name2', 'name3' );
+    is_deeply \@values, [ 'VALUE2', 'VALUE2-2', 'VALUE3' ];
+    is_deeply $parser->as_array, [
+        { name => 'name1', value => 'VALUE1' },
+    ];
+    is_deeply $parser->as_hash, {
+        name1 => 'VALUE1',
+    };
+};
+
 subtest 'Parse and Build' => sub {
     my $parser = Sweets::Text::HTML::Attributes::Parser->new(
         raw => q{name1=VALUE1 name2="VALUE 2" name3='VALUE 3' VALUE4 "VALUE 5"}
