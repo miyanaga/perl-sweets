@@ -5,7 +5,7 @@ use warnings;
 
 use Any::Moose;
 
-has separator => ( is => 'ro', isa => 'Str', default => ',' );
+has separator => ( is => 'ro', isa => 'Any', default => ',' );
 has line_break => ( is => 'ro', isa => 'Str', default => "\n" );
 has quotes => ( is => 'ro', isa => 'Str', default => q{"'} );
 has rows => ( is => 'rw', isa => 'ArrayRef', default => sub { [] } );
